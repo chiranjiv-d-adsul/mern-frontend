@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+// const BASE_URL = 'http://localhost:3000/';
 
 const Certificate = () => {
   const [certificates, setCertificates] = useState([]);
@@ -16,7 +16,7 @@ const Certificate = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://certificatebackend-2azt.onrender.com/`);
+      const response = await axios.get(`http://localhost:3000/`);
       setCertificates(response.data.data);
       setIsLoading(false);
     } catch (error) {
@@ -27,7 +27,7 @@ const Certificate = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post(`https://certificatebackend-2azt.onrender.com/create`, { name, course, date });
+      await axios.post(`http://localhost:3000/create`, { name, course, date });
       // After successfully creating certificate, fetch updated data
       fetchData();
       // Clear form fields
@@ -41,7 +41,7 @@ const Certificate = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://certificatebackend-2azt.onrender.com/delete/${id}`);
+      await axios.delete(`http://localhost:3000/delete/${id}`);
       // After successfully deleting certificate, fetch updated data
       fetchData();
     } catch (error) {
@@ -52,7 +52,7 @@ const Certificate = () => {
     try {
       // Send only the necessary data to the server for updating
       const { _id, name, course, date } = selectedCertificate;
-      await axios.put(`https://certificatebackend-2azt.onrender.com/update/${_id}`, { name, course, date });
+      await axios.put(`http://localhost:3000/update/${_id}`, { name, course, date });
       // After successfully updating certificate, fetch updated data
       fetchData();
       setSelectedCertificate(null);
@@ -68,7 +68,7 @@ const Certificate = () => {
 
   // const storeDriveLinkInDB = async (certificate, webViewLink) => {
   //   try {
-  //     const response = await axios.post(`https://certificatebackend-2azt.onrender.com/store-drive-link`, {
+  //     const response = await axios.post(`http://localhost:3000/store-drive-link`, {
   //       certificateId: certificate._id,
 
   //       webViewLink: webViewLink, // Corrected property name
@@ -82,7 +82,7 @@ const Certificate = () => {
 
   // const storeDriveLinkInDB = async (certificate, driveLink) => {
   //   try {
-  //     const response = await axios.post('https://certificatebackend-2azt.onrender.com/store-drive-link', {
+  //     const response = await axios.post('http://localhost:3000/store-drive-link', {
   //       certificateId: certificate._id,
   //       driveLink: driveLink,
   //       weblink: driveLink.webViewLink,
@@ -103,7 +103,7 @@ const Certificate = () => {
 
   const handleGenerate = async (certificate) => {
     try {
-      const response = await axios.post(`https://certificatebackend-2azt.onrender.com/generate-certificate`, {
+      const response = await axios.post(`http://localhost:3000/generate-certificate`, {
         name: certificate.name,
         course: certificate.course,
         date: certificate.date,
@@ -127,7 +127,7 @@ const Certificate = () => {
           await uploadPDFToDrive(pdfBlob);
 
           // Store the generated Drive link in the database
-          // await storeDriveLinkInDB(certificate, response.data);
+          await storeDriveLinkInDB(certificate, response.data);
 
           // Optionally, you could also fetch updated certificate data after generating
           // the certificate if needed.
@@ -144,7 +144,7 @@ const Certificate = () => {
   };
   // const handleGenerate = async (certificate) => {
   //   try {
-  //     const response = await axios.post('https://certificatebackend-2azt.onrender.com/generate-certificate', {
+  //     const response = await axios.post('http://localhost:3000/generate-certificate', {
   //       name: certificate.name,
   //       course: certificate.course,
   //       date: certificate.date,
@@ -185,7 +185,7 @@ const Certificate = () => {
   // };
   // const storeDriveLinkInDB = async (certificate, driveLink) => {
   //   try {
-  //     const response = await axios.post('https://certificatebackend-2azt.onrender.com/store-drive-link', {
+  //     const response = await axios.post('http://localhost:3000/store-drive-link', {
   //       certificateId: certificate._id,
   //       driveLink: driveLink,
   //     });
@@ -200,7 +200,7 @@ const Certificate = () => {
   // const storeDriveLinkInDB = async (certificate, pdfData) => {
   //   try {
   //     // Make a request to your backend API to store the Drive link in the database
-  //     const response = await axios.post('https://certificatebackend-2azt.onrender.com/store-drive-link', {
+  //     const response = await axios.post('http://localhost:3000/store-drive-link', {
   //       certificateId: certificate._id, // Assuming your certificate has an ID
   //       driveLink: 'THE_GENERATED_DRIVE_LINK', // Replace 'THE_GENERATED_DRIVE_LINK' with the actual link
   //       pdfData: pdfData, // Optionally, you can also store the PDF data if needed
@@ -215,7 +215,7 @@ const Certificate = () => {
 
   // const handleGenerate = async (certificate) => {
   //   try {
-  //     const response = await axios.post('https://certificatebackend-2azt.onrender.com/generate-certificate', {
+  //     const response = await axios.post('http://localhost:3000/generate-certificate', {
   //       name: certificate.name,
   //       course: certificate.course,
   //       date: certificate.date,
@@ -261,7 +261,7 @@ const uploadPDFToDrive = async (pdfBlob) => {
     const formData = new FormData();
     formData.append('file', pdfBlob, 'Certificate.pdf');
 
-    const response = await axios.post(`https://certificatebackend-2azt.onrender.com/upload-to-drive`, formData, {
+    const response = await axios.post(`http://localhost:3000/upload-to-drive`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
